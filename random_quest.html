@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MHRise Random Select Quest</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
+
+      rel="stylesheet">
+    <meta name="description" content="モンスターハンターライズ(Monster Hunter Rise)のクエストランダム選択ツールです。エンドコンテンツ化しつつある状態でどのクエストに行ったらいいか悩む時に使います">
+    <meta name="generator" content="BlueGriffon wysiwyg editor">
+  </head>
+  <body>
+    <div class="yui-t1"> <divclass="page-header">
+        <h1>MHRise Random Select Quest</h1>
+      </divclass="page-header"></div>
+    <button type="button" class="btn btn-default" id="next">NextQuest</button>
+    <table class="table" id="RandomQuest">
+    </table>
+    ランダムで選ばれるクエスト一覧<br />
+    上位、イベント上位 20210723付
+    <table class="table" id="Quest_List">
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+        $('#next').on('click', function() {
+          const RandomQuest = document.getElementById('RandomQuest');
+          let insertElement = ''; //テーブルタグに表示する用の変数
+          insertElement += '<tr>';
+          dataArray[Math.floor(Math.random() * dataArray.length)].forEach((childElement) => {
+              insertElement += `<td>${childElement}</td>`
+          });
+          insertElement += '</tr>';
+          RandomQuest.innerHTML = insertElement; // 表示
+        });
+        const output_csv = document.getElementById('Quest_List');
+
+        function csv_data(dataPath) {
+            const request = new XMLHttpRequest(); // HTTPでファイルを読み込む
+            request.addEventListener('load', (event) => { // ロードさせ実行
+                const response = event.target.responseText; // 受け取ったテキストを返す
+                csv_array(response); //csv_arrayの関数を実行
+            });
+            request.open('GET', dataPath, true); // csvのパスを指定
+            request.send();
+        }
+
+        const dataArray = []; //配列を用意
+        function csv_array(data) {
+            const dataString = data.split('\n'); //改行で分割
+            for (let i = 0; i < dataString.length; i++) { //あるだけループ
+                dataArray[i] = dataString[i].split(',');
+            }
+            let insertElement = ''; //テーブルタグに表示する用の変数
+            dataArray.forEach((element) => { //配列の中身を表示
+                insertElement += '<tr>';
+                element.forEach((childElement) => {
+                    insertElement += `<td>${childElement}</td>`
+                });
+                insertElement += '</tr>';
+            });
+            output_csv.innerHTML = insertElement; // 表示
+        }
+        csv_data('QuestList.csv'); // csvのパス
+        </script>
+  </body>
+</html>
