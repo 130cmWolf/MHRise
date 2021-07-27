@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -18,52 +18,57 @@
     <table class="table" id="RandomQuest">
     </table>
     ランダムで選ばれるクエスト一覧<br />
-    上位、イベント上位 20210723付
+    更新日 : <span id="updateDay"></span>
     <table class="table" id="Quest_List">
     </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
+        var timer;
+        var count = 0;
+        const RandomQuest = document.getElementById('RandomQuest');
+
         $('#next').on('click', function() {
-          const RandomQuest = document.getElementById('RandomQuest');
-          let insertElement = ''; //テーブルタグに表示する用の変数
-          insertElement += '<tr>';
-          dataArray[Math.floor(Math.random() * dataArray.length)].forEach((childElement) => {
-              insertElement += `<td>${childElement}</td>`
-          });
-          insertElement += '</tr>';
-          RandomQuest.innerHTML = insertElement; // 表示
+          count = 0;
+          if(timer)
+            clearInterval(timer);
+          timer = setInterval(getQuest, 10);
         });
+        
+        var getQuest = function(){
+          let insertElement = '';
+          quest = dataArray[Math.floor(Math.random() * dataArray.length)];
+          insertElement += '<tr>';
+          insertElement += `<td>${quest.rank}</td>`;
+          insertElement += `<td>${quest.title}</td>`;
+          insertElement += `<td>${quest.target}</td>`;
+          insertElement += '</tr>';
+          RandomQuest.innerHTML = insertElement;
+          if(count++ >5){
+            clearInterval(timer);
+            timer=null;
+          }
+        }
+        
+        var dataArray;
         const output_csv = document.getElementById('Quest_List');
 
-        function csv_data(dataPath) {
-            const request = new XMLHttpRequest(); // HTTPでファイルを読み込む
-            request.addEventListener('load', (event) => { // ロードさせ実行
-                const response = event.target.responseText; // 受け取ったテキストを返す
-                csv_array(response); //csv_arrayの関数を実行
-            });
-            request.open('GET', dataPath, true); // csvのパスを指定
-            request.send();
-        }
+        $.getJSON("QuestList.json", (data) => {
+          const updateDay = document.getElementById('updateDay');
+          updateDay.innerHTML = data.updateDay;
+          dataArray = data.quest;
+          let insertElement = '';
+          data.quest.forEach((quest) => {
+              insertElement += '<tr>';
+              insertElement += `<td>${quest.rank}</td>`;
+              insertElement += `<td>${quest.title}</td>`;
+              insertElement += `<td>${quest.target}</td>`;
+              insertElement += '</tr>';
+          });
+          output_csv.innerHTML = insertElement;
+        });
 
-        const dataArray = []; //配列を用意
-        function csv_array(data) {
-            const dataString = data.split('\n'); //改行で分割
-            for (let i = 0; i < dataString.length; i++) { //あるだけループ
-                dataArray[i] = dataString[i].split(',');
-            }
-            let insertElement = ''; //テーブルタグに表示する用の変数
-            dataArray.forEach((element) => { //配列の中身を表示
-                insertElement += '<tr>';
-                element.forEach((childElement) => {
-                    insertElement += `<td>${childElement}</td>`
-                });
-                insertElement += '</tr>';
-            });
-            output_csv.innerHTML = insertElement; // 表示
-        }
-        csv_data('QuestList.csv'); // csvのパス
         </script>
   </body>
 </html>
