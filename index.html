@@ -14,11 +14,19 @@
     <div class="yui-t1"> <divclass="page-header">
         <h1>MHRise Random Select Quest</h1>
       </divclass="page-header"></div>
-    <button type="button" class="btn btn-default" id="next">NextQuest</button>
-    <table class="table" id="RandomQuest">
-    </table>
-    ランダムで選ばれるクエスト一覧<br />
-    更新日 : <span id="updateDay"></span>
+    <button type="button" class="btn btn-primary" id="next">NextQuest</button>
+    <div id="info"></div>
+    <table class="table" id="RandomQuest"></table>
+    <button type="button" class="btn btn-success" id="all">全選択</button>
+    <button type="button" class="btn btn-default" id="kogata">小型除外</button>
+    <button type="button" class="btn btn-default" id="hokaku">捕獲除外</button>
+    <button type="button" class="btn btn-default" id="HR4Quest">オンライン★4除外</button>
+    <button type="button" class="btn btn-default" id="HR5Quest">オンライン★5除外</button>
+    <button type="button" class="btn btn-default" id="EventQuest">イベント除外</button>
+    <div>
+      ランダムで選ばれるクエスト一覧<br />
+      更新日 : <span id="updateDay"></span>
+    </div>
     <table class="table" id="Quest_List">
     </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -27,46 +35,149 @@
 
         var timer;
         var count = 0;
+        var dataArray;
+        var randomSelect;
+
         const RandomQuest = document.getElementById('RandomQuest');
+        const info = document.getElementById('info');
+        const output_csv = document.getElementById('Quest_List');
+
+        $('#all').on('click', function() {
+          dataArray.forEach((quest) => {
+            quest.CheckBox.checked = true;
+          });
+        });
+
+        $('#kogata').on('click', function() {
+          dataArray.filter(quest => quest.kogata).forEach((selectquest) => {
+            selectquest.CheckBox.checked = false;
+          });
+        });
+
+        $('#hokaku').on('click', function() {
+          dataArray.filter(quest => quest.hokaku).forEach((selectquest) => {
+            selectquest.CheckBox.checked = false;
+          });
+        });
+
+        $('#HR4Quest').on('click', function() {
+          dataArray.filter(quest => quest.id.substring(0, 2)=='O4').forEach((selectquest) => {
+            selectquest.CheckBox.checked = false;
+          });
+        });
+        
+        $('#HR5Quest').on('click', function() {
+          dataArray.filter(quest => quest.id.substring(0, 2)=='O5').forEach((selectquest) => {
+            selectquest.CheckBox.checked = false;
+          });
+        });
+        
+        $('#EventQuest').on('click', function() {
+          dataArray.filter(quest => quest.id.substring(0, 1)=='E').forEach((selectquest) => {
+            selectquest.CheckBox.checked = false;
+          });
+        });
 
         $('#next').on('click', function() {
           count = 0;
           if(timer)
             clearInterval(timer);
+          randomSelect = dataArray.filter(quest => quest.CheckBox.checked);
+
+          while (info.firstChild) {
+            info.removeChild(info.lastChild);
+          }
+
+          
+          if(!randomSelect.length){
+            while (RandomQuest.firstChild) {
+              RandomQuest.removeChild(RandomQuest.lastChild);
+            }
+            let dengerInfo = document.createElement("div");
+            dengerInfo.setAttribute('class', 'alert alert-danger');
+            dengerInfo.setAttribute('role', 'alert');
+            dengerInfo.appendChild(document.createTextNode('選出クエストが選択されていません。'))
+            info.appendChild(dengerInfo);
+            return;
+          }
           timer = setInterval(getQuest, 10);
         });
         
         var getQuest = function(){
-          let insertElement = '';
-          quest = dataArray[Math.floor(Math.random() * dataArray.length)];
-          insertElement += '<tr>';
-          insertElement += `<td>${quest.rank}</td>`;
-          insertElement += `<td>${quest.title}</td>`;
-          insertElement += `<td>${quest.target}</td>`;
-          insertElement += '</tr>';
-          RandomQuest.innerHTML = insertElement;
-          if(count++ >5){
+          if (!randomSelect.length)
+          {
             clearInterval(timer);
             timer=null;
+            return;
           }
+
+          while (RandomQuest.firstChild) {
+            RandomQuest.removeChild(RandomQuest.lastChild);
+          }
+
+          quest = randomSelect[Math.floor(Math.random() * randomSelect.length)];
+          let tbody = document.createElement("tbody");
+          let questLine = document.createElement("tr");
+
+          let questRank = document.createElement("td");
+          questRank.appendChild(document.createTextNode(quest.rank))
+          questLine.appendChild(questRank);
+          
+          let questTitle = document.createElement("td");
+          questTitle.appendChild(document.createTextNode(quest.title))
+          questLine.appendChild(questTitle);
+          
+          let questTarget = document.createElement("td");
+          questTarget.appendChild(document.createTextNode(quest.target))
+          questLine.appendChild(questTarget);
+
+          tbody.appendChild(questLine);
+          RandomQuest.appendChild(tbody);
+          
+          clearInterval(timer);
+          timer=null;
         }
         
-        var dataArray;
-        const output_csv = document.getElementById('Quest_List');
 
         $.getJSON("QuestList.json", (data) => {
           const updateDay = document.getElementById('updateDay');
           updateDay.innerHTML = data.updateDay;
           dataArray = data.quest;
-          let insertElement = '';
+
+          let thead = document.createElement("thead");
+          let tbody = document.createElement("tbody");
           data.quest.forEach((quest) => {
-              insertElement += '<tr>';
-              insertElement += `<td>${quest.rank}</td>`;
-              insertElement += `<td>${quest.title}</td>`;
-              insertElement += `<td>${quest.target}</td>`;
-              insertElement += '</tr>';
+              let questLine = document.createElement("tr");
+
+              let questCheck = document.createElement("td");
+              let questdiv = document.createElement("div");
+              let questlabel = document.createElement("label");
+              let questinput = document.createElement("input");
+              questinput.setAttribute('type', 'checkbox');
+              questinput.setAttribute('value', quest.id);
+              questlabel.appendChild(questinput);
+              questdiv.appendChild(questlabel);
+              questCheck.appendChild(questdiv);
+              questLine.appendChild(questCheck);
+              questinput.checked = true;
+              quest.CheckBox = questinput;
+
+              let questRank = document.createElement("td");
+              questRank.appendChild(document.createTextNode(quest.rank))
+              questLine.appendChild(questRank);
+              
+              let questTitle = document.createElement("td");
+              questTitle.appendChild(document.createTextNode(quest.title))
+              questLine.appendChild(questTitle);
+              
+              let questTarget = document.createElement("td");
+              questTarget.appendChild(document.createTextNode(quest.target))
+              questLine.appendChild(questTarget);
+
+              tbody.appendChild(questLine);
           });
-          output_csv.innerHTML = insertElement;
+          output_csv.appendChild(thead);
+          output_csv.appendChild(tbody);
         });
 
         </script>
