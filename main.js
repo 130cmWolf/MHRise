@@ -140,16 +140,37 @@ $(function(){
 
     // 100px スクロールしたらボタン表示
     $(window).scroll(function () {
-    if ($(this).scrollTop() > 100) {
-        pagetop.fadeIn();
-    } else {
-        pagetop.fadeOut();
-    }
+        if ($(this).scrollTop() > 100) {
+            pagetop.fadeIn();
+        } else {
+            pagetop.fadeOut();
+        }
     });
+
     pagetop.click(function () {
     $('body, html').animate({ scrollTop: 0 }, 500);
-    return false;
+        return false;
     });
+
+
+	$('#find').bind("click",function(){
+		var re = new RegExp($('#search').val());
+		$('#Quest_List tbody tr').each(function(){
+			var txt = $(this).find("td:eq(3)").html();
+			if(txt.match(re) != null){
+				$(this).show();
+			}else{
+				$(this).hide();
+			}
+		});
+	});
+
+	$('#clear').bind("click",function(){
+		$('#search').val('');
+		$('#Quest_List tr').show();
+	});
+
+
     $.getJSON("QuestList.json", (data) => {
         const updateDay = document.getElementById('updateDay');
         updateDay.innerHTML = data.updateDay;

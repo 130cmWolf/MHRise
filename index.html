@@ -15,11 +15,11 @@
         <h1>MHRise Random Select Quest</h1>
       </divclass="page-header"></div>
     <button type="button" class="btn btn-primary" id="next"><i class="bi bi-arrow-repeat"></i> NextQuest</button>
-    <button type="button" class="btn btn-info" id="save"><i class="bi bi-box-arrow-in-down"></i> Save</button>
-    <button type="button" class="btn btn-warning" id="load"><i class="bi bi-box-arrow-up"></i> Load</button>
     <div id="info"></div>
     <table class="table" id="RandomQuest"></table>
     <button type="button" class="btn btn-success" id="all"><i class="bi bi-check-all"></i> 全選択</button>
+    <button type="button" class="btn btn-info" id="save"><i class="bi bi-box-arrow-in-down"></i> Save</button>
+    <button type="button" class="btn btn-warning" id="load"><i class="bi bi-box-arrow-up"></i> Load</button>
     <button type="button" class="btn btn-default" id="kogata">小型除外</button>
     <button type="button" class="btn btn-default" id="hokaku">捕獲除外</button>
     <button type="button" class="btn btn-default" id="HR4Quest">オンライン★4除外</button>
@@ -31,7 +31,20 @@
     </div>
     <table class="table" id="Quest_List">
       <thead>
-        <tr><th>Select</th><th>Rank</th><th>QuestTitle</th><th>Target</th></tr>
+        <tr>
+          <th>Select</th>
+          <th>Rank</th>
+          <th>QuestTitle</th>
+          <th>
+            <form onsubmit="return false"><div class="input-group">
+              <input type="text" class="form-control" placeholder="Target" id="search">
+              <span class="input-group-btn">
+                <button type="submit" id="find" class="btn btn-primary"><i class="bi bi-search"></i>Search</button>
+                <button type="button" id="clear" class="btn btn-default">Clear</button>
+              </span>
+            </div></form>
+          </th>
+        </tr>
       </thead>
     </table>
     <div id="page_top"><a href="#"><i class="bi bi-chevron-double-up"></i></a></div>
