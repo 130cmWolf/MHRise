@@ -4,20 +4,39 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MHRise Random Select Quest</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
-
-      rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <meta name="description" content="モンスターハンターライズ(Monster Hunter Rise)のクエストランダム選択ツールです。エンドコンテンツ化しつつある状態でどのクエストに行ったらいいか悩む時に使います">
     <meta name="generator" content="BlueGriffon wysiwyg editor">
+    <style>
+    #page_top {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+    }
+    #page_top a {
+        background-color: #999;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        padding: 15px 15px;
+    }
+    #page_top a:hover {
+        background-color: #666;
+        text-decoration: none;
+    }
+    </style>
   </head>
   <body>
     <div class="yui-t1"> <divclass="page-header">
         <h1>MHRise Random Select Quest</h1>
       </divclass="page-header"></div>
-    <button type="button" class="btn btn-primary" id="next">NextQuest</button>
+    <button type="button" class="btn btn-primary" id="next"><i class="bi bi-arrow-repeat"></i> NextQuest</button>
+    <button type="button" class="btn btn-info" id="save"><i class="bi bi-box-arrow-in-down"></i> Save</button>
+    <button type="button" class="btn btn-warning" id="load"><i class="bi bi-box-arrow-up"></i> Load</button>
     <div id="info"></div>
     <table class="table" id="RandomQuest"></table>
-    <button type="button" class="btn btn-success" id="all">全選択</button>
+    <button type="button" class="btn btn-success" id="all"><i class="bi bi-check-all"></i> 全選択</button>
     <button type="button" class="btn btn-default" id="kogata">小型除外</button>
     <button type="button" class="btn btn-default" id="hokaku">捕獲除外</button>
     <button type="button" class="btn btn-default" id="HR4Quest">オンライン★4除外</button>
@@ -28,7 +47,11 @@
       更新日 : <span id="updateDay"></span>
     </div>
     <table class="table" id="Quest_List">
+      <thead>
+        <tr><th>Select</th><th>Rank</th><th>QuestTitle</th><th>Target</th></tr>
+      </thead>
     </table>
+    <div id="page_top"><a href="#"><i class="bi bi-chevron-double-up"></i></a></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -41,6 +64,49 @@
         const RandomQuest = document.getElementById('RandomQuest');
         const info = document.getElementById('info');
         const output_csv = document.getElementById('Quest_List');
+        $(function(){
+          var pagetop = $('#page_top');
+          // ボタン非表示
+          pagetop.hide();
+
+          // 100px スクロールしたらボタン表示
+          $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+              pagetop.fadeIn();
+            } else {
+              pagetop.fadeOut();
+            }
+          });
+          pagetop.click(function () {
+            $('body, html').animate({ scrollTop: 0 }, 500);
+            return false;
+          });
+        });
+
+        $('#save').on('click', function() {
+          document.cookie = "MHRiseQuestData=" + Array.from(dataArray.filter(quest => quest.CheckBox.checked), q => q.id);
+        });
+        
+        $('#load').on('click', function() {
+          let cookies = document.cookie;
+          let cookiesArray = cookies.split(';');
+
+          dataArray.forEach((quest) => {
+            quest.CheckBox.checked = false;
+          });
+
+          for(let c of cookiesArray){
+            let cArray = c.split('=');
+            if( cArray[0] == 'MHRiseQuestData'){
+              let savedata = cArray[1].split(',');
+              savedata.forEach((saveId) => {
+                let found = dataArray.find(element => element .id == saveId);
+                if(found)
+                  found.CheckBox.checked = true;
+              });
+            }
+          }
+        });
 
         $('#all').on('click', function() {
           dataArray.forEach((quest) => {
