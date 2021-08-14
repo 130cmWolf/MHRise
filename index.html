@@ -4,7 +4,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MHRise Random Select Quest</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <meta name="description" content="モンスターハンターライズ(Monster Hunter Rise)のクエストランダム選択ツールです。エンドコンテンツ化しつつある状態でどのクエストに行ったらいいか悩む時に使います">
     <meta name="generator" content="BlueGriffon wysiwyg editor">
@@ -15,15 +16,20 @@
         <h1>MHRise Random Select Quest</h1>
       </divclass="page-header"></div>
     <button type="button" class="btn btn-primary" id="next"><i class="bi bi-arrow-repeat"></i> NextQuest</button>
+    <button type="button" class="btn btn-success" id="QuestClear"><i class="bi bi-check"></i> Quest Clear !</button>
+    <div class="alert alert-success" role="alert" id="QuestClearLabel">Quest Clear !</div>
+    <div class="alert alert-danger" role="alert" id="QuestError">選出クエストが選択されていません。</div>
     <div id="info"></div>
     <table class="table" id="RandomQuest"></table>
     <button type="button" class="btn btn-success" id="all"><i class="bi bi-check-all"></i> 表示全選択</button>
     <button type="button" class="btn btn-danger" id="allDisable"><i class="bi bi-check-all"></i> 表示全解除</button>
     <button type="button" class="btn btn-default" id="kogata">小型除外</button>
     <button type="button" class="btn btn-default" id="hokaku">捕獲除外</button>
-    <button type="button" class="btn btn-default" id="HR4Quest">オンライン★4除外</button>
-    <button type="button" class="btn btn-default" id="HR5Quest">オンライン★5除外</button>
-    <button type="button" class="btn btn-default" id="EventQuest">イベント除外</button>
+    <button type="button" class="btn btn-default" id="rank4Disable">★4除外</button>
+    <button type="button" class="btn btn-default" id="rank5Disable">★5除外</button>
+    <button type="button" class="btn btn-default" id="rank6Disable">★6除外</button>
+    <button type="button" class="btn btn-default" id="rank74Disable">★7除外</button>
+    <button type="button" class="btn btn-default" id="rank78Disable"><span id="HR8">★7除外</span></button>
     <div>
       ランダムで選ばれるクエスト一覧<br />
       更新日 : <span id="updateDay"></span>
@@ -32,7 +38,22 @@
       <thead>
         <tr>
           <th>Select</th>
-          <th>Rank</th>
+          <th>
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                Rank
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li role="presentation"><a href="#" id="dropdownAll">All</a></li>
+                <li role="presentation"><a href="#" id="dropdown4">★★★★</a></li>
+                <li role="presentation"><a href="#" id="dropdown5">★★★★★</a></li>
+                <li role="presentation"><a href="#" id="dropdown6">★★★★★★</a></li>
+                <li role="presentation"><a href="#" id="dropdown74">★★★★★★★</a></li>
+                <li role="presentation"><a href="#" id="dropdown78"><span id="HR8">★★★★★★★</span></a></li>
+              </ul>
+            </div>
+          </th>
           <th>QuestTitle</th>
           <th>
             <form onsubmit="return false"><div class="input-group">
@@ -48,7 +69,7 @@
     </table>
     <div id="page_top"><a href="#"><i class="bi bi-chevron-double-up"></i></a></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="./main.js"></script>
     </body>
 </html>

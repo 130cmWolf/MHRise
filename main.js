@@ -1,158 +1,214 @@
-
-var timer;
-var count = 0;
 var dataArray;
 var randomSelect;
-var RandomQuest; 
+var RandomQuest;
 var info;
 var output_csv;
 
 
-function save() {
+var save = function () {
     document.cookie = "MHRiseQuestData=" + Array.from(dataArray.filter(quest => quest.CheckBox.checked), q => q.id);
 }
 
-$('#all').on('click', function() {
+$('#all').on('click', function () {
     dataArray.filter(quest => $(quest.TableLine).is(':visible')).forEach((quest) => {
         quest.CheckBox.checked = true;
     });
     save();
 });
 
-$('#allDisable').on('click', function() {
+$('#allDisable').on('click', function () {
     dataArray.filter(quest => $(quest.TableLine).is(':visible')).forEach((quest) => {
         quest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#kogata').on('click', function() {
+$('#kogata').on('click', function () {
     dataArray.filter(quest => quest.kogata).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#hokaku').on('click', function() {
+$('#hokaku').on('click', function () {
     dataArray.filter(quest => quest.hokaku).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#HR4Quest').on('click', function() {
-    dataArray.filter(quest => quest.id.substring(0, 2)=='O4').forEach((selectquest) => {
+$('#rank4Disable').on('click', function () {
+    dataArray.filter(quest => quest.rank == 4).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#HR5Quest').on('click', function() {
-    dataArray.filter(quest => quest.id.substring(0, 2)=='O5').forEach((selectquest) => {
+$('#rank5Disable').on('click', function () {
+    dataArray.filter(quest => quest.rank == 5).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#EventQuest').on('click', function() {
-    dataArray.filter(quest => quest.id.substring(0, 1)=='E').forEach((selectquest) => {
+$('#rank6Disable').on('click', function () {
+    dataArray.filter(quest => quest.rank == 6).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#next').on('click', function() {
-    count = 0;
-    if(timer)
-    clearInterval(timer);
+$('#rank74Disable').on('click', function () {
+    dataArray.filter(quest => quest.rank == 7 && quest.HR != 8).forEach((selectquest) => {
+        selectquest.CheckBox.checked = false;
+    });
+    save();
+});
+$('#rank78Disable').on('click', function () {
+    dataArray.filter(quest => quest.rank == 7 && quest.HR == 8).forEach((selectquest) => {
+        selectquest.CheckBox.checked = false;
+    });
+    save();
+});
+
+$('#next').on('click', function () {
     randomSelect = dataArray.filter(quest => quest.CheckBox.checked);
 
     while (info.firstChild) {
-    info.removeChild(info.lastChild);
+        info.removeChild(info.lastChild);
     }
 
-    
-    if(!randomSelect.length){
-    while (RandomQuest.firstChild) {
-        RandomQuest.removeChild(RandomQuest.lastChild);
+    $('#QuestError').hide();
+    $('#QuestClearLabel').hide();
+
+    if (!randomSelect.length) {
+        $('#QuestError').show();
+        return;
     }
-    let dengerInfo = document.createElement("div");
-    dengerInfo.setAttribute('class', 'alert alert-danger');
-    dengerInfo.setAttribute('role', 'alert');
-    dengerInfo.appendChild(document.createTextNode('選出クエストが選択されていません。'))
-    info.appendChild(dengerInfo);
-    return;
-    }
-    timer = setInterval(getQuest, 10);
+    getQuest();
 });
 
-
-$('#find').bind("click",function(){
-    var re = new RegExp($('#search').val());
-    dataArray.forEach((quest) => {
-        $(quest.TableLine).hide();
-    });
-
-    dataArray.filter(quest => $(quest.TableLine).find("td:eq(3)").html().match(re) != null).forEach((selectquest) => {
-        $(selectquest.TableLine).show();
-    });
+$('#find').on("click", function () {
+    targetname = new RegExp($('#search').val());
+    query();
 });
 
-$('#clear').bind("click",function(){
+$('#clear').on("click", function () {
     $('#search').val('');
+    dropdownrank = null;
+    dropdownrankHR = null;
+    targetname = "";
     dataArray.forEach((quest) => {
         $(quest.TableLine).show();
     });
 });
 
-var getQuest = function(){
-    if (!randomSelect.length)
-    {
-    clearInterval(timer);
-    timer=null;
-    return;
-    }
+var dropdownrank;
+var dropdownrankHR;
+var targetname = "";
 
+var query = function () {
+    dataArray.forEach((quest) => {
+        $(quest.TableLine).hide();
+    });
+
+    dataArray.filter(quest => $(quest.TableLine).find("td:eq(3)").html().match(targetname) != null &&
+        (!dropdownrank || quest.rank == dropdownrank) &&
+        (!dropdownrankHR || quest.HR == dropdownrankHR))
+        .forEach((selectquest) => {
+            $(selectquest.TableLine).show();
+        });
+
+}
+$('#dropdown4').on("click", function () {
+    dropdownrank = 4;
+    dropdownrankHR = 4;
+    query();
+});
+$('#dropdown5').on("click", function () {
+    dropdownrank = 5;
+    dropdownrankHR = 4;
+    query();
+});
+$('#dropdown6').on("click", function () {
+    dropdownrank = 6;
+    dropdownrankHR = 4;
+    query();
+});
+$('#dropdown74').on("click", function () {
+    dropdownrank = 7;
+    dropdownrankHR = 4;
+    query();
+});
+$('#dropdown78').on("click", function () {
+    dropdownrank = 7;
+    dropdownrankHR = 8;
+    query();
+});
+$('#dropdownAll').on("click", function () {
+    dropdownrank = null;
+    dropdownrankHR = null;
+    query();
+});
+
+var nowQuest;
+
+$('#QuestClear').on('click', function () {
+    if (nowQuest) {
+        nowQuest.CheckBox.checked = false
+        nowQuest = null;
+        save();
+
+        
+        while (RandomQuest.firstChild) {
+            RandomQuest.removeChild(RandomQuest.lastChild);
+        }
+        $('#QuestClearLabel').show();
+    }
+});
+
+
+var getQuest = function () {
     while (RandomQuest.firstChild) {
-    RandomQuest.removeChild(RandomQuest.lastChild);
+        RandomQuest.removeChild(RandomQuest.lastChild);
     }
 
-    quest = randomSelect[Math.floor(Math.random() * randomSelect.length)];
+    nowQuest = randomSelect[Math.floor(Math.random() * randomSelect.length)];
     let tbody = document.createElement("tbody");
     let questLine = document.createElement("tr");
 
     let questRank = document.createElement("td");
     let span = document.createElement("span");
-    if(quest.HR == 8){
+    if (nowQuest.HR == 8) {
         span.setAttribute('id', 'HR8');
-    }else{
+    } else {
         span.setAttribute('id', 'HR4');
     }
-    
+
     span.appendChild(
         document.createTextNode(
-            (quest.event?'E':'') +
-            ('★'.repeat(quest.rank))
-            ));
+            (nowQuest.event ? 'E' : '') +
+            ('★'.repeat(nowQuest.rank))
+        ));
     questRank.appendChild(span);
     questLine.appendChild(questRank);
-    
+
     let questTitle = document.createElement("td");
-    questTitle.appendChild(document.createTextNode(quest.title))
+    questTitle.appendChild(document.createTextNode(nowQuest.title))
     questLine.appendChild(questTitle);
-    
+
     let questTarget = document.createElement("td");
-    questTarget.appendChild(document.createTextNode(quest.target))
+    questTarget.appendChild(document.createTextNode(nowQuest.target))
     questLine.appendChild(questTarget);
 
     tbody.appendChild(questLine);
     RandomQuest.appendChild(tbody);
-    
-    clearInterval(timer);
-    timer=null;
 }
 
-$(function(){
+$(function () {
+    $('#QuestError').hide();
+    $('#QuestClearLabel').hide();
+
     RandomQuest = document.getElementById('RandomQuest');
     info = document.getElementById('info');
     output_csv = document.getElementById('Quest_List');
@@ -171,7 +227,7 @@ $(function(){
     });
 
     pagetop.click(function () {
-    $('body, html').animate({ scrollTop: 0 }, 500);
+        $('body, html').animate({ scrollTop: 0 }, 500);
         return false;
     });
 
@@ -201,24 +257,24 @@ $(function(){
 
             let questRank = document.createElement("td");
             let span = document.createElement("span");
-            if(quest.HR == 8){
+            if (quest.HR == 8) {
                 span.setAttribute('id', 'HR8');
-            }else{
+            } else {
                 span.setAttribute('id', 'HR4');
             }
-            
+
             span.appendChild(
                 document.createTextNode(
-                    (quest.event?'E':'') +
+                    (quest.event ? 'E' : '') +
                     ('★'.repeat(quest.rank))
-                    ));
+                ));
             questRank.appendChild(span);
             questLine.appendChild(questRank);
-            
+
             let questTitle = document.createElement("td");
             questTitle.appendChild(document.createTextNode(quest.title))
             questLine.appendChild(questTitle);
-            
+
             let questTarget = document.createElement("td");
             questTarget.appendChild(document.createTextNode(quest.target))
             questLine.appendChild(questTarget);
@@ -229,23 +285,23 @@ $(function(){
 
         let cookies = document.cookie;
         let cookiesArray = cookies.split(';');
-    
-        for(let c of cookiesArray){
+
+        for (let c of cookiesArray) {
             let cArray = c.split('=');
-            if( cArray[0] == 'MHRiseQuestData'){
+            if (cArray[0] == 'MHRiseQuestData') {
                 dataArray.forEach((quest) => {
                     quest.CheckBox.checked = false;
                 });
                 let savedata = cArray[1].split(',');
                 savedata.forEach((saveId) => {
-                    let found = dataArray.find(element => element .id == saveId);
-                    if(found)
+                    let found = dataArray.find(element => element.id == saveId);
+                    if (found)
                         found.CheckBox.checked = true;
                 });
             }
         }
 
-        $('[id=select]').on('change', function() {
+        $('[id=select]').on('change', function () {
             save();
         });
     });
