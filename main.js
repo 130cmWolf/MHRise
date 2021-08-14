@@ -79,7 +79,7 @@ $('#next').on('click', function () {
     }
 
     $('#QuestError').hide();
-    $('#QuestClearLabel').hide();
+    $('#QuestCompleteLabel').hide();
 
     if (!randomSelect.length) {
         $('#QuestError').show();
@@ -153,7 +153,7 @@ $('#dropdownAll').on("click", function () {
 
 var nowQuest;
 
-$('#QuestClear').on('click', function () {
+$('#QuestComplete').on('click', function () {
     if (nowQuest) {
         nowQuest.CheckBox.checked = false
         nowQuest = null;
@@ -163,7 +163,7 @@ $('#QuestClear').on('click', function () {
         while (RandomQuest.firstChild) {
             RandomQuest.removeChild(RandomQuest.lastChild);
         }
-        $('#QuestClearLabel').show();
+        $('#QuestCompleteLabel').show();
     }
 });
 
@@ -207,7 +207,7 @@ var getQuest = function () {
 
 $(function () {
     $('#QuestError').hide();
-    $('#QuestClearLabel').hide();
+    $('#QuestCompleteLabel').hide();
 
     RandomQuest = document.getElementById('RandomQuest');
     info = document.getElementById('info');
