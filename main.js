@@ -8,65 +8,57 @@ var info;
 var output_csv;
 
 
-$('#save').on('click', function() {
+function save() {
     document.cookie = "MHRiseQuestData=" + Array.from(dataArray.filter(quest => quest.CheckBox.checked), q => q.id);
-});
-
-$('#load').on('click', function() {
-    let cookies = document.cookie;
-    let cookiesArray = cookies.split(';');
-
-    dataArray.forEach((quest) => {
-    quest.CheckBox.checked = false;
-    });
-
-    for(let c of cookiesArray){
-        let cArray = c.split('=');
-        if( cArray[0] == 'MHRiseQuestData'){
-            let savedata = cArray[1].split(',');
-            savedata.forEach((saveId) => {
-            let found = dataArray.find(element => element .id == saveId);
-            if(found)
-                found.CheckBox.checked = true;
-            });
-        }
-    }
-});
+}
 
 $('#all').on('click', function() {
-    dataArray.forEach((quest) => {
-    quest.CheckBox.checked = true;
+    dataArray.filter(quest => $(quest.TableLine).is(':visible')).forEach((quest) => {
+        quest.CheckBox.checked = true;
     });
+    save();
+});
+
+$('#allDisable').on('click', function() {
+    dataArray.filter(quest => $(quest.TableLine).is(':visible')).forEach((quest) => {
+        quest.CheckBox.checked = false;
+    });
+    save();
 });
 
 $('#kogata').on('click', function() {
     dataArray.filter(quest => quest.kogata).forEach((selectquest) => {
-    selectquest.CheckBox.checked = false;
+        selectquest.CheckBox.checked = false;
     });
+    save();
 });
 
 $('#hokaku').on('click', function() {
     dataArray.filter(quest => quest.hokaku).forEach((selectquest) => {
-    selectquest.CheckBox.checked = false;
+        selectquest.CheckBox.checked = false;
     });
+    save();
 });
 
 $('#HR4Quest').on('click', function() {
     dataArray.filter(quest => quest.id.substring(0, 2)=='O4').forEach((selectquest) => {
-    selectquest.CheckBox.checked = false;
+        selectquest.CheckBox.checked = false;
     });
+    save();
 });
 
 $('#HR5Quest').on('click', function() {
     dataArray.filter(quest => quest.id.substring(0, 2)=='O5').forEach((selectquest) => {
-    selectquest.CheckBox.checked = false;
+        selectquest.CheckBox.checked = false;
     });
+    save();
 });
 
 $('#EventQuest').on('click', function() {
     dataArray.filter(quest => quest.id.substring(0, 1)=='E').forEach((selectquest) => {
-    selectquest.CheckBox.checked = false;
+        selectquest.CheckBox.checked = false;
     });
+    save();
 });
 
 $('#next').on('click', function() {
@@ -94,6 +86,25 @@ $('#next').on('click', function() {
     timer = setInterval(getQuest, 10);
 });
 
+
+$('#find').bind("click",function(){
+    var re = new RegExp($('#search').val());
+    dataArray.forEach((quest) => {
+        $(quest.TableLine).hide();
+    });
+
+    dataArray.filter(quest => $(quest.TableLine).find("td:eq(3)").html().match(re) != null).forEach((selectquest) => {
+        $(selectquest.TableLine).show();
+    });
+});
+
+$('#clear').bind("click",function(){
+    $('#search').val('');
+    dataArray.forEach((quest) => {
+        $(quest.TableLine).show();
+    });
+});
+
 var getQuest = function(){
     if (!randomSelect.length)
     {
@@ -111,7 +122,19 @@ var getQuest = function(){
     let questLine = document.createElement("tr");
 
     let questRank = document.createElement("td");
-    questRank.appendChild(document.createTextNode(quest.rank))
+    let span = document.createElement("span");
+    if(quest.HR == 8){
+        span.setAttribute('id', 'HR8');
+    }else{
+        span.setAttribute('id', 'HR4');
+    }
+    
+    span.appendChild(
+        document.createTextNode(
+            (quest.event?'E':'') +
+            ('★'.repeat(quest.rank))
+            ));
+    questRank.appendChild(span);
     questLine.appendChild(questRank);
     
     let questTitle = document.createElement("td");
@@ -152,25 +175,6 @@ $(function(){
         return false;
     });
 
-
-	$('#find').bind("click",function(){
-		var re = new RegExp($('#search').val());
-		$('#Quest_List tbody tr').each(function(){
-			var txt = $(this).find("td:eq(3)").html();
-			if(txt.match(re) != null){
-				$(this).show();
-			}else{
-				$(this).hide();
-			}
-		});
-	});
-
-	$('#clear').bind("click",function(){
-		$('#search').val('');
-		$('#Quest_List tr').show();
-	});
-
-
     $.getJSON("QuestList.json", (data) => {
         const updateDay = document.getElementById('updateDay');
         updateDay.innerHTML = data.updateDay;
@@ -179,12 +183,14 @@ $(function(){
         let tbody = document.createElement("tbody");
         data.quest.forEach((quest) => {
             let questLine = document.createElement("tr");
+            quest.TableLine = questLine;
 
             let questCheck = document.createElement("td");
             let questdiv = document.createElement("div");
             let questlabel = document.createElement("label");
             let questinput = document.createElement("input");
             questinput.setAttribute('type', 'checkbox');
+            questinput.setAttribute('id', 'select');
             questinput.setAttribute('value', quest.id);
             questlabel.appendChild(questinput);
             questdiv.appendChild(questlabel);
@@ -194,7 +200,19 @@ $(function(){
             quest.CheckBox = questinput;
 
             let questRank = document.createElement("td");
-            questRank.appendChild(document.createTextNode(quest.rank))
+            let span = document.createElement("span");
+            if(quest.HR == 8){
+                span.setAttribute('id', 'HR8');
+            }else{
+                span.setAttribute('id', 'HR4');
+            }
+            
+            span.appendChild(
+                document.createTextNode(
+                    (quest.event?'E':'') +
+                    ('★'.repeat(quest.rank))
+                    ));
+            questRank.appendChild(span);
             questLine.appendChild(questRank);
             
             let questTitle = document.createElement("td");
@@ -208,5 +226,27 @@ $(function(){
             tbody.appendChild(questLine);
         });
         output_csv.appendChild(tbody);
+
+        let cookies = document.cookie;
+        let cookiesArray = cookies.split(';');
+    
+        for(let c of cookiesArray){
+            let cArray = c.split('=');
+            if( cArray[0] == 'MHRiseQuestData'){
+                dataArray.forEach((quest) => {
+                    quest.CheckBox.checked = false;
+                });
+                let savedata = cArray[1].split(',');
+                savedata.forEach((saveId) => {
+                    let found = dataArray.find(element => element .id == saveId);
+                    if(found)
+                        found.CheckBox.checked = true;
+                });
+            }
+        }
+
+        $('[id=select]').on('change', function() {
+            save();
+        });
     });
 });

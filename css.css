@@ -4,6 +4,7 @@
     bottom: 30px;
     right: 20px;
 }
+
 #page_top a {
     background-color: #999;
     color: #fff;
@@ -11,7 +12,12 @@
     text-decoration: none;
     padding: 15px 15px;
 }
+
 #page_top a:hover {
     background-color: #666;
     text-decoration: none;
+}
+
+#HR8 {
+    color: peru;
 }

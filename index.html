@@ -17,9 +17,8 @@
     <button type="button" class="btn btn-primary" id="next"><i class="bi bi-arrow-repeat"></i> NextQuest</button>
     <div id="info"></div>
     <table class="table" id="RandomQuest"></table>
-    <button type="button" class="btn btn-success" id="all"><i class="bi bi-check-all"></i> 全選択</button>
-    <button type="button" class="btn btn-info" id="save"><i class="bi bi-box-arrow-in-down"></i> Save</button>
-    <button type="button" class="btn btn-warning" id="load"><i class="bi bi-box-arrow-up"></i> Load</button>
+    <button type="button" class="btn btn-success" id="all"><i class="bi bi-check-all"></i> 表示全選択</button>
+    <button type="button" class="btn btn-danger" id="allDisable"><i class="bi bi-check-all"></i> 表示全解除</button>
     <button type="button" class="btn btn-default" id="kogata">小型除外</button>
     <button type="button" class="btn btn-default" id="hokaku">捕獲除外</button>
     <button type="button" class="btn btn-default" id="HR4Quest">オンライン★4除外</button>
@@ -29,7 +28,7 @@
       ランダムで選ばれるクエスト一覧<br />
       更新日 : <span id="updateDay"></span>
     </div>
-    <table class="table" id="Quest_List">
+    <table class="table table-hover table-condensed" id="Quest_List">
       <thead>
         <tr>
           <th>Select</th>
