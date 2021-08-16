@@ -1,3 +1,6 @@
+body {
+    font-family: 'Stick', sans-serif;
+}
 
 #page_top {
     position: fixed;
@@ -20,4 +23,28 @@
 
 #HR8 {
     color: peru;
+}
+
+@media screen and (max-width: 640px) {
+    .tbl-r {
+        width: 100%;
+    }
+    .tbl-r td:nth-of-type(3) {
+        display: inline-block;
+        width: 100%;
+    }
+    .tbl-r td:nth-of-type(4) {
+        display: inline-block;
+        width: 100%;
+        border-top: none;
+    }
+    .tbl-r th:nth-of-type(3) {
+        display: inline-block;
+        width: 100%;
+        border: none;
+    }
+    .tbl-r th:nth-of-type(4) {
+        display: inline-block;
+        width: 100%;
+    }
 }
