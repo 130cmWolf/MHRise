@@ -9,7 +9,7 @@ body {
 }
 
 #page_top a {
-    background-color: #999;
+    background-color: rgba(153, 153, 153, 0.521);
     color: #fff;
     text-align: center;
     text-decoration: none;
@@ -17,7 +17,7 @@ body {
 }
 
 #page_top a:hover {
-    background-color: #666;
+    background-color: rgba(102, 102, 102, 0.589);
     text-decoration: none;
 }
 
