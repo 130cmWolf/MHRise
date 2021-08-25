@@ -5,73 +5,73 @@ var info;
 var output_csv;
 
 
-var save = function () {
+var save = function() {
     document.cookie = "MHRiseQuestData=" + Array.from(dataArray.filter(quest => quest.CheckBox.checked), q => q.id);
 }
 
-$('#all').on('click', function () {
+$('#all').on('click', function() {
     dataArray.filter(quest => $(quest.TableLine).is(':visible')).forEach((quest) => {
         quest.CheckBox.checked = true;
     });
     save();
 });
 
-$('#allDisable').on('click', function () {
+$('#allDisable').on('click', function() {
     dataArray.filter(quest => $(quest.TableLine).is(':visible')).forEach((quest) => {
         quest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#kogata').on('click', function () {
+$('#kogata').on('click', function() {
     dataArray.filter(quest => quest.kogata).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#hokaku').on('click', function () {
+$('#hokaku').on('click', function() {
     dataArray.filter(quest => quest.hokaku).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#rank4Disable').on('click', function () {
+$('#rank4Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 4).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#rank5Disable').on('click', function () {
+$('#rank5Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 5).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#rank6Disable').on('click', function () {
+$('#rank6Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 6).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#rank74Disable').on('click', function () {
+$('#rank74Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 7 && quest.HR != 8).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
-$('#rank78Disable').on('click', function () {
+$('#rank78Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 7 && quest.HR == 8).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
     save();
 });
 
-$('#next').on('click', function () {
+$('#next').on('click', function() {
     randomSelect = dataArray.filter(quest => quest.CheckBox.checked);
 
     while (info.firstChild) {
@@ -88,12 +88,12 @@ $('#next').on('click', function () {
     getQuest();
 });
 
-$('#find').on("click", function () {
+$('#find').on("click", function() {
     targetname = new RegExp($('#search').val());
     query();
 });
 
-$('#clear').on("click", function () {
+$('#clear').on("click", function() {
     $('#search').val('');
     dropdownrank = null;
     dropdownrankHR = null;
@@ -107,45 +107,45 @@ var dropdownrank;
 var dropdownrankHR;
 var targetname = "";
 
-var query = function () {
+var query = function() {
     dataArray.forEach((quest) => {
         $(quest.TableLine).hide();
     });
 
     dataArray.filter(quest => $(quest.TableLine).find("td:eq(3)").html().match(targetname) != null &&
-        (!dropdownrank || quest.rank == dropdownrank) &&
-        (!dropdownrankHR || quest.HR == dropdownrankHR))
+            (!dropdownrank || quest.rank == dropdownrank) &&
+            (!dropdownrankHR || quest.HR == dropdownrankHR))
         .forEach((selectquest) => {
             $(selectquest.TableLine).show();
         });
 
 }
-$('#dropdown4').on("click", function () {
+$('#dropdown4').on("click", function() {
     dropdownrank = 4;
     dropdownrankHR = 4;
     query();
 });
-$('#dropdown5').on("click", function () {
+$('#dropdown5').on("click", function() {
     dropdownrank = 5;
     dropdownrankHR = 4;
     query();
 });
-$('#dropdown6').on("click", function () {
+$('#dropdown6').on("click", function() {
     dropdownrank = 6;
     dropdownrankHR = 4;
     query();
 });
-$('#dropdown74').on("click", function () {
+$('#dropdown74').on("click", function() {
     dropdownrank = 7;
     dropdownrankHR = 4;
     query();
 });
-$('#dropdown78').on("click", function () {
+$('#dropdown78').on("click", function() {
     dropdownrank = 7;
     dropdownrankHR = 8;
     query();
 });
-$('#dropdownAll').on("click", function () {
+$('#dropdownAll').on("click", function() {
     dropdownrank = null;
     dropdownrankHR = null;
     query();
@@ -153,13 +153,13 @@ $('#dropdownAll').on("click", function () {
 
 var nowQuest;
 
-$('#QuestComplete').on('click', function () {
+$('#QuestComplete').on('click', function() {
     if (nowQuest) {
         nowQuest.CheckBox.checked = false
         nowQuest = null;
         save();
 
-        
+
         while (RandomQuest.firstChild) {
             RandomQuest.removeChild(RandomQuest.lastChild);
         }
@@ -168,7 +168,7 @@ $('#QuestComplete').on('click', function () {
 });
 
 
-var getQuest = function () {
+var getQuest = function() {
     while (RandomQuest.firstChild) {
         RandomQuest.removeChild(RandomQuest.lastChild);
     }
@@ -176,6 +176,9 @@ var getQuest = function () {
     nowQuest = randomSelect[Math.floor(Math.random() * randomSelect.length)];
     let tbody = document.createElement("tbody");
     let questLine = document.createElement("tr");
+
+    let questCheck = document.createElement("td");
+    questLine.appendChild(questCheck);
 
     let questRank = document.createElement("td");
     let span = document.createElement("span");
@@ -205,7 +208,7 @@ var getQuest = function () {
     RandomQuest.appendChild(tbody);
 }
 
-$(function () {
+$(function() {
     $('#QuestError').hide();
     $('#QuestCompleteLabel').hide();
 
@@ -218,7 +221,7 @@ $(function () {
     pagetop.hide();
 
     // 100px スクロールしたらボタン表示
-    $(window).scroll(function () {
+    $(window).scroll(function() {
         if ($(this).scrollTop() > 100) {
             pagetop.fadeIn();
         } else {
@@ -226,7 +229,7 @@ $(function () {
         }
     });
 
-    pagetop.click(function () {
+    pagetop.click(function() {
         $('body, html').animate({ scrollTop: 0 }, 500);
         return false;
     });
@@ -301,7 +304,7 @@ $(function () {
             }
         }
 
-        $('[id=select]').on('change', function () {
+        $('[id=select]').on('change', function() {
             save();
         });
     });
