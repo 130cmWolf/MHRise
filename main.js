@@ -81,6 +81,10 @@ $('#next').on('click', function() {
     $('#QuestError').hide();
     $('#QuestCompleteLabel').hide();
 
+    while (RandomQuest.firstChild) {
+        RandomQuest.removeChild(RandomQuest.lastChild);
+    }
+
     if (!randomSelect.length) {
         $('#QuestError').show();
         return;
@@ -169,9 +173,6 @@ $('#QuestComplete').on('click', function() {
 
 
 var getQuest = function() {
-    while (RandomQuest.firstChild) {
-        RandomQuest.removeChild(RandomQuest.lastChild);
-    }
 
     nowQuest = randomSelect[Math.floor(Math.random() * randomSelect.length)];
     let tbody = document.createElement("tbody");
@@ -240,19 +241,27 @@ $(function() {
         dataArray = data.quest;
 
         let tbody = document.createElement("tbody");
+        let forcount = 0;
         data.quest.forEach((quest) => {
             let questLine = document.createElement("tr");
             quest.TableLine = questLine;
 
             let questCheck = document.createElement("td");
             let questdiv = document.createElement("div");
-            let questlabel = document.createElement("label");
+            questdiv.setAttribute('class', 'text-center custom-control custom-checkbox');
+
             let questinput = document.createElement("input");
             questinput.setAttribute('type', 'checkbox');
-            questinput.setAttribute('id', 'select');
+            questinput.setAttribute('id', 'select' + forcount);
+            questinput.setAttribute('class', 'custom-control-input');
             questinput.setAttribute('value', quest.id);
-            questlabel.appendChild(questinput);
+            questdiv.appendChild(questinput);
+
+            let questlabel = document.createElement("label");
+            questlabel.setAttribute('class', 'custom-control-label');
+            questlabel.setAttribute('for', 'select' + forcount);
             questdiv.appendChild(questlabel);
+
             questCheck.appendChild(questdiv);
             questLine.appendChild(questCheck);
             questinput.checked = true;
@@ -283,6 +292,7 @@ $(function() {
             questLine.appendChild(questTarget);
 
             tbody.appendChild(questLine);
+            forcount++;
         });
         output_csv.appendChild(tbody);
 
@@ -307,5 +317,6 @@ $(function() {
         $('[id=select]').on('change', function() {
             save();
         });
+
     });
 });

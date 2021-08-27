@@ -5,27 +5,25 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MHRise Quest Roulette</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <meta name="description" content="モンスターハンターライズ(Monster Hunter Rise)のクエストルーレット選択ツールです。エンドコンテンツ化しつつある状態でどのクエストに行ったらいいか悩む時に使います">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.6.0/dist/yeti/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Stick&display=swap" rel="stylesheet">
-    <meta name="description" content="モンスターハンターライズ(Monster Hunter Rise)のクエストルーレット選択ツールです。エンドコンテンツ化しつつある状態でどのクエストに行ったらいいか悩む時に使います">
-    <meta name="generator" content="BlueGriffon wysiwyg editor">
+
     <link rel="stylesheet" href="./css.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header col-xs-12">
-                <a class="navbar-brand" href="#">MHRise Quest Roulette</a>
-                <div class="pull-right">
-                    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="MHRise Quest Roulette (モンハンライズクエストルーレット)" data-url="https://130cmwolf.github.io/MHRise/" data-via="nagisato" data-hashtags="モンハンライズ" data-related="" data-show-count="false">Tweet</a>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </div>
-            </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand">MHRise Quest Roulette</a>
+        <div class="float-right">
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="MHRise Quest Roulette (モンハンライズクエストルーレット)" data-url="https://130cmwolf.github.io/MHRise/" data-via="nagisato" data-hashtags="モンハンライズ" data-related="" data-show-count="false">Tweet</a>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
     </nav>
     <button type="button" class="btn btn-primary" id="next"><i class="bi bi-arrow-repeat"></i> Next Quest</button>
@@ -33,30 +31,30 @@
     <div class="alert alert-success" role="alert" id="QuestCompleteLabel">Quest Complete</div>
     <div class="alert alert-danger" role="alert" id="QuestError">選出クエストが選択されていません。</div>
     <div id="info"></div>
-    <table class="table tbl-r" id="RandomQuest"></table>
+    <table class="table tbl-r table-sm" id="RandomQuest"></table>
 
     <button type="button" class="btn btn-success" id="all"><i class="bi bi-check-all"></i> 表示全選択</button>
     <button type="button" class="btn btn-danger" id="allDisable"><i class="bi bi-check-all"></i> 表示全解除</button>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#setting">Quest Select setting    </button>
 
-    <div class="modal fade" id="setting" tabindex="-1">
+    <div class="modal fade " id="setting" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><i class="bi bi-x"></i></button>
                     <h4 class="modal-title">選択除外セット</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="bi bi-x"></i></button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <button type="button" class="btn btn-default" id="kogata">小型除外</button>
-                        <button type="button" class="btn btn-default" id="hokaku">捕獲除外</button>
+                        <button type="button" class="btn btn-light" id="kogata">小型除外</button>
+                        <button type="button" class="btn btn-light" id="hokaku">捕獲除外</button>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-default" id="rank4Disable">★4除外</button>
-                        <button type="button" class="btn btn-default" id="rank5Disable">★5除外</button>
-                        <button type="button" class="btn btn-default" id="rank6Disable">★6除外</button>
-                        <button type="button" class="btn btn-default" id="rank74Disable">★7除外</button>
-                        <button type="button" class="btn btn-default" id="rank78Disable"><span id="HR8">★7除外</span></button>
+                        <button type="button" class="btn btn-light" id="rank4Disable">★4除外</button>
+                        <button type="button" class="btn btn-light" id="rank5Disable">★5除外</button>
+                        <button type="button" class="btn btn-light" id="rank6Disable">★6除外</button>
+                        <button type="button" class="btn btn-light" id="rank74Disable">★7除外</button>
+                        <button type="button" class="btn btn-light" id="rank78Disable"><span id="HR8">★7除外</span></button>
                     </div>
                 </div>
                 <!--
@@ -68,23 +66,23 @@
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="読み込みコード">
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default"><i class="bi bi-clipboard"></i></button>
+                            <button type="button" class="btn btn-light"><i class="bi bi-clipboard"></i></button>
                         </span>
                     </div>
-                    <button type="button" class="btn btn-default" id=""><i class="bi bi-box-arrow-in-down"></i>インポート</button>
+                    <button type="button" class="btn btn-light" id=""><i class="bi bi-box-arrow-in-down"></i>インポート</button>
                 </div>
                 <div class="modal-body">
                     <div><i class="bi bi-share"></i>共有URL</div>
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="URL">
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default"><i class="bi bi-clipboard"></i></button>
+                            <button type="button" class="btn btn-light"><i class="bi bi-clipboard"></i></button>
                         </span>
                     </div>
                 </div>
                 -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">閉じる</button>
                 </div>
             </div>
         </div>
@@ -93,35 +91,34 @@
     <div>
         ルーレットで選ばれるクエスト一覧<br /> クエスト更新日 : <span id="updateDay"></span>
     </div>
-    <table class="table table-hover table-condensed tbl-r" id="Quest_List">
-        <thead>
+    <table class="table table-hover table-condensed tbl-r table-sm" id="Quest_List">
+        <thead class='thead-light'>
             <tr>
                 <th>Select</th>
                 <th>
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              Rank
-              <span class="caret"></span>
-            </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#" id="dropdownAll">All</a></li>
-                            <li role="presentation"><a href="#" id="dropdown4">★★★★</a></li>
-                            <li role="presentation"><a href="#" id="dropdown5">★★★★★</a></li>
-                            <li role="presentation"><a href="#" id="dropdown6">★★★★★★</a></li>
-                            <li role="presentation"><a href="#" id="dropdown74">★★★★★★★</a></li>
-                            <li role="presentation"><a href="#" id="dropdown78"><span id="HR8">★★★★★★★</span></a></li>
-                        </ul>
+                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Rank
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item href=" # " id="dropdownAll ">All</a>
+                            <a class="dropdown-item href="#" id="dropdown4">★★★★</a>
+                            <a class="dropdown-item href=" # " id="dropdown5 ">★★★★★</a>
+                            <a class="dropdown-item href="#" id="dropdown6">★★★★★★</a>
+                            <a class="dropdown-item href=" # " id="dropdown74 ">★★★★★★★</a>
+                            <a class="dropdown-item href="#" id="dropdown78"><span id="HR8">★★★★★★★</span></a>
+                        </div>
                     </div>
                 </th>
                 <th>QuestTitle</th>
                 <th>
                     <form onsubmit="return false">
-                        <div class="input-group">
+                        <div class="input-group input-group-sm">
                             <input type="text" class="form-control" placeholder="Target" id="search">
-                            <span class="input-group-btn">
-                <button type="submit" id="find" class="btn btn-primary"><i class="bi bi-search"></i>Search</button>
-                <button type="button" id="clear" class="btn btn-default">Clear</button>
-              </span>
+                            <div class="input-group-append">
+                                <button type="submit" id="find" class="btn btn-primary"><i class="bi bi-search"></i>Search</button>
+                                <button type="button" id="clear" class="btn btn-light">Clear</button>
+                            </div>
                         </div>
                     </form>
                 </th>
@@ -129,8 +126,13 @@
         </thead>
     </table>
     <div id="page_top"><a href="#"><i class="bi bi-chevron-double-up"></i></a></div>
+
+    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
     <script src="./main.js"></script>
 </body>
 
