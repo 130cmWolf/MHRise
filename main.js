@@ -92,7 +92,7 @@ $('#next').on('click', function() {
     getQuest();
 });
 
-$('#find').on("click", function() {
+$('#search').keyup(function() {
     targetname = new RegExp($('#search').val());
     query();
 });
@@ -124,36 +124,40 @@ var query = function() {
         });
 
 }
-$('#dropdown4').on("click", function() {
-    dropdownrank = 4;
-    dropdownrankHR = 4;
+$('#rankselect').change(function() {
+    switch ($(this).val()) {
+        case '0':
+            dropdownrank = null;
+            dropdownrankHR = null;
+            break;
+        case '4':
+            dropdownrank = 4;
+            dropdownrankHR = 4;
+            break;
+        case '5':
+            dropdownrank = 5;
+            dropdownrankHR = 4;
+            break;
+        case '6':
+            dropdownrank = 7;
+            dropdownrankHR = 4;
+            break;
+        case '7':
+            dropdownrank = 7;
+            dropdownrankHR = 4;
+            break;
+        case '78':
+            dropdownrank = 7;
+            dropdownrankHR = 8;
+            break;
+    }
     query();
 });
-$('#dropdown5').on("click", function() {
-    dropdownrank = 5;
-    dropdownrankHR = 4;
-    query();
-});
-$('#dropdown6').on("click", function() {
-    dropdownrank = 6;
-    dropdownrankHR = 4;
-    query();
-});
-$('#dropdown74').on("click", function() {
-    dropdownrank = 7;
-    dropdownrankHR = 4;
-    query();
-});
-$('#dropdown78').on("click", function() {
-    dropdownrank = 7;
-    dropdownrankHR = 8;
-    query();
-});
-$('#dropdownAll').on("click", function() {
-    dropdownrank = null;
-    dropdownrankHR = null;
-    query();
-});
+
+
+
+
+
 
 var nowQuest;
 
