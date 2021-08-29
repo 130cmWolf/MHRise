@@ -63,3 +63,10 @@ body {
         width: 100%;
     }
 }
+
+.toast-group {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 9999;
+}

@@ -27,6 +27,7 @@ $('#kogata').on('click', function() {
     dataArray.filter(quest => quest.kogata).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
+    $('#toast1').toast('show');
     save();
 });
 
@@ -34,6 +35,7 @@ $('#hokaku').on('click', function() {
     dataArray.filter(quest => quest.hokaku).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
+    $('#toast1').toast('show');
     save();
 });
 
@@ -41,6 +43,7 @@ $('#rank4Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 4).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
+    $('#toast1').toast('show');
     save();
 });
 
@@ -48,6 +51,7 @@ $('#rank5Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 5).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
+    $('#toast1').toast('show');
     save();
 });
 
@@ -55,6 +59,7 @@ $('#rank6Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 6).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
+    $('#toast1').toast('show');
     save();
 });
 
@@ -62,12 +67,14 @@ $('#rank74Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 7 && quest.HR != 8).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
+    $('#toast1').toast('show');
     save();
 });
 $('#rank78Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 7 && quest.HR == 8).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
+    $('#toast1').toast('show');
     save();
 });
 
