@@ -1,5 +1,5 @@
 {
-    "updateDay": "2021-08-27",
+    "updateDay": "2021-09-03",
     "quest": [{
             "id": "O4-0",
             "rank": 4,
@@ -743,6 +743,14 @@
             "event": true,
             "title": "SF・サイキョー流昇段試験",
             "target": "ラージャン1頭の狩猟"
+        },
+        {
+            "id": "E-13",
+            "rank": 7,
+            "HR": 8,
+            "event": true,
+            "title": "砂漠に咲く白糸の花",
+            "target": "ヤツカダキ1匹の狩猟"
         }
     ]
 }
