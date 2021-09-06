@@ -4,6 +4,23 @@ var RandomQuest;
 var info;
 var output_csv;
 
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-bottom-center",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
 
 var save = function() {
     document.cookie = "MHRiseQuestData=" + Array.from(dataArray.filter(quest => quest.CheckBox.checked), q => q.id);
@@ -27,7 +44,7 @@ $('#kogata').on('click', function() {
     dataArray.filter(quest => quest.kogata).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
-    $('#toast1').toast('show');
+    toastr["info"]("小型討伐クエストを<br/>除外しました。");
     save();
 });
 
@@ -35,7 +52,7 @@ $('#hokaku').on('click', function() {
     dataArray.filter(quest => quest.hokaku).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
-    $('#toast1').toast('show');
+    toastr["info"]("捕獲クエストを除外しました。");
     save();
 });
 
@@ -43,7 +60,7 @@ $('#rank4Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 4).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
-    $('#toast1').toast('show');
+    toastr["info"]("★4を除外しました。");
     save();
 });
 
@@ -51,7 +68,7 @@ $('#rank5Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 5).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
-    $('#toast1').toast('show');
+    toastr["info"]("★5を除外しました。");
     save();
 });
 
@@ -59,7 +76,7 @@ $('#rank6Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 6).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
-    $('#toast1').toast('show');
+    toastr["info"]("★6を除外しました。");
     save();
 });
 
@@ -67,14 +84,14 @@ $('#rank74Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 7 && quest.HR != 8).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
-    $('#toast1').toast('show');
+    toastr["info"]("★7を除外しました。");
     save();
 });
 $('#rank78Disable').on('click', function() {
     dataArray.filter(quest => quest.rank == 7 && quest.HR == 8).forEach((selectquest) => {
         selectquest.CheckBox.checked = false;
     });
-    $('#toast1').toast('show');
+    toastr["info"]("★7 HR8~を除外しました。");
     save();
 });
 
@@ -85,15 +102,13 @@ $('#next').on('click', function() {
         info.removeChild(info.lastChild);
     }
 
-    $('#QuestError').hide();
-    $('#QuestCompleteLabel').hide();
 
     while (RandomQuest.firstChild) {
         RandomQuest.removeChild(RandomQuest.lastChild);
     }
 
     if (!randomSelect.length) {
-        $('#QuestError').show();
+        toastr["error"]("選出クエストが<br/>選択されていません。");
         return;
     }
     getQuest();
@@ -178,7 +193,7 @@ $('#QuestComplete').on('click', function() {
         while (RandomQuest.firstChild) {
             RandomQuest.removeChild(RandomQuest.lastChild);
         }
-        $('#QuestCompleteLabel').show();
+        toastr["success"]("Quest Clear");
     }
 });
 
@@ -221,8 +236,6 @@ var getQuest = function() {
 }
 
 $(function() {
-    $('#QuestError').hide();
-    $('#QuestCompleteLabel').hide();
 
     RandomQuest = document.getElementById('RandomQuest');
     info = document.getElementById('info');
