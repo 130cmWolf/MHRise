@@ -1,5 +1,5 @@
 {
-    "updateDay": "2021-10-08",
+    "updateDay": "2021-10-15",
     "quest": [{
             "id": "O4-0",
             "rank": 4,
@@ -791,6 +791,14 @@
             "event": true,
             "title": "暴君の背くらべ",
             "target": "ヌシ・ディアブロス２頭の討伐"
+        }
+        {
+            "id": "E-19",
+            "rank": 7,
+            "HR": 8,
+            "event": true,
+            "title": "風神再臨",
+            "target": "イブシマキヒコ１体の討伐"
         }
     ]
 }
